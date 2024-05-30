@@ -1,0 +1,14 @@
+@startjson find
+[
+            {"id": "int",
+            "type": "enum",
+            "start_point": "float",
+            "end_point": "float"
+            },
+            {"id": "int",
+            "type": "enum",
+            "start_point": "float",
+            "end_point": "float"
+            }
+        ]
+@endjson

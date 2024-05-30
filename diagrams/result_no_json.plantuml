@@ -1,0 +1,12 @@
+@startjson res
+[
+            {"id": "int",
+            "valid":"bool",
+            "type": "enum"
+            },
+            {"id": "int",
+            "valid":"bool",
+            "type": "enum"
+            }
+        ]
+@endjson

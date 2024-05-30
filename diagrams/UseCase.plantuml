@@ -1,0 +1,53 @@
+@startuml "Диаграмма вариантов использования"
+
+' Перичисление Actor 
+actor Специалист as specialist
+
+rectangle {
+    left to right direction
+    ' Перечисление всех функций
+    usecase "Регулировака\n параметров камеры" as change_camera_params
+    usecase "Настройка\n экспозиции" as expouse
+    usecase "Настройка\n баланаса белого" as white_balance
+    usecase "Настройка\n температуры" as temperature
+    usecase "Настройка\n яркости" as brightness
+    usecase "Настройка\n контрастности" as contrast
+
+    usecase "Загрузка\n gerber файлов" as load_gerber 
+
+    usecase "Управление проектом" as manage_project
+    usecase "Создание" as create_project
+    usecase "Удаление" as delete_project
+    usecase "Сохранение" as save_project
+    usecase "Загрузка" as load_project
+
+    usecase "Юстировка стола" as alignment
+
+    usecase "Сканирование платы" as scan_PCB
+    
+    usecase "Не установка/перепутывание\n компонетов" as no_component
+}
+
+' Перечисление всех связей
+specialist --> load_gerber
+
+specialist --> change_camera_params
+change_camera_params <-- expouse: <extend>
+change_camera_params <-- white_balance: <extend>
+change_camera_params <-- temperature: <extend>
+change_camera_params <-- brightness: <extend>
+change_camera_params <-- contrast: <extend>
+
+specialist --> manage_project
+manage_project <-- create_project: <extend>
+manage_project <-- delete_project: <extend>
+manage_project <-- save_project: <extend>
+manage_project <-- load_project: <extend>
+
+specialist --> alignment
+
+specialist --> scan_PCB
+
+specialist --> no_component
+
+@endunl

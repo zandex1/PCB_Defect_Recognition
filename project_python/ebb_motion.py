@@ -2,6 +2,7 @@ import time
 import ebb_serial_my as ebb_serial_my
 import cv2 as cv
 import sys
+import os
 
 def doABMove(port_name, delta_a, delta_b, duration):
     # Issue command to move A/B axes as: "XM,<move_duration>,<axisA>,<axisB><CR>"
@@ -111,8 +112,6 @@ def grid_prepare(ser, X_len, Y_len, X_grid, Y_grid, cap=None):
     X_grid+=1
     Y_grid+=1
     
-    
-    
     d_x=0
     d_y=0
   
@@ -169,7 +168,6 @@ def grid_prepare(ser, X_len, Y_len, X_grid, Y_grid, cap=None):
             d_y=d_y1-d_y2
           
             print(d_x,d_y)
-            
             
             if not cap.isOpened():
                     sendEnableMotors(ser,0)

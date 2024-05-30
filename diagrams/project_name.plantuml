@@ -1,0 +1,7 @@
+@startjson dd
+{
+ "name": "string",
+ "isReference": "bool",
+ "count_inspected": "int"
+}
+@endjson

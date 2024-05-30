@@ -1,0 +1,19 @@
+@startuml Architecture
+
+node "Координатный стол" as tabele {
+    node "Камера" as camera
+    node "Микроконтроллер" as microconroller
+}
+
+node "Ubuntu" as PC{
+    database "База данных" as db 
+    node "Приложение" as app
+}
+
+camera -[hidden]down- microconroller
+
+app -down- db: "Записывает/\nсчитывает\nJSON"
+app -right- camera: "      USB"
+app -down- microconroller: "COM" 
+
+@enduml

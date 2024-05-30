@@ -2,13 +2,18 @@ import cv2
 import glob
 import numpy as np
 
-image_path = glob.glob('images/*')
+image_path = glob.glob('images/res/*')
 image_path.sort()
 
 images = []
 
 for i in range(0,len(image_path)):
-    images.append(cv2.imread(image_path[i]))
+    img = cv2.imread(image_path[i])
+    img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
+    img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
+    img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
+    
+    images.append(img)
 print(len(images))
 
 def find_homography(train_image, query_image):
@@ -24,7 +29,7 @@ def find_homography(train_image, query_image):
     bf = cv2.BFMatcher(cv2.NORM_L2, crossCheck=False)
     
     raw_matches = bf.knnMatch(features_train_image, features_query_image, k=2)
-    # print('Raw matches with KNN', len(raw_matches))
+    print('Raw matches with KNN', len(raw_matches))
     
     knn_matches = []
     
@@ -107,7 +112,7 @@ def trim(frame):
 
 pair = []
 
-for i in range(0,24):
+for i in range(0,23):
     homography_matrix = find_homography(train_image=images[i+1],query_image=images[i])
     
     if homography_matrix is None:
@@ -126,7 +131,7 @@ y=0
 print(len(pair))
 result = images[0]
 
-for i in range(0,24):
+for i in range(0,23):
     x+= pair[i]["Translation matrix"][0]
     y+= pair[i]["Translation matrix"][1]
     
@@ -147,6 +152,13 @@ for i in range(0,24):
 
     result = trim(result_st)
     result = result[0:result.shape[0],0:result.shape[1]-int(abs(new_points[2][0][0]-new_points[3][0][0]))]
-    cv2.imwrite(f'res{i+1}.jpg',cv2.cvtColor(result, cv2.COLOR_RGB2BGR))
     
     print(i)          
+    
+result = result[70:]
+result = result[:-70]
+
+result = cv2.rotate(result, cv2.ROTATE_90_CLOCKWISE)
+
+cv2.imwrite(f'res.jpg',cv2.cvtColor(result, cv2.COLOR_RGB2BGR))
+    

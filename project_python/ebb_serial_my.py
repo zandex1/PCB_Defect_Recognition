@@ -255,7 +255,7 @@ def testPort(port_name):
                 return serial_port
             serial_port.close()
         except serial.SerialException as err:
-            print("error")
+            print("ERROR:'Microcontroller not connected'")
         return None
 
 

@@ -10,7 +10,7 @@ import ebb_motion as ebb_command
 import ebb_serial_my as ebb_serial
 
 from settings import Settings
-from open_project import OpenProejct
+from open_project import OpenProject
 from create_project import CreateProject
 
 
@@ -35,7 +35,7 @@ class MainWindow:
         self.menubar = Menu(self.main_window,background='white', foreground='black', activebackground='white', activeforeground='black')
         self.file = Menu(self.menubar,tearoff=0, background='white', foreground='black')
         self.file.add_command(label='Создать', command=self.create_project)
-        self.file.add_command(label='Открыть', command='')
+        self.file.add_command(label='Открыть', command=self.open_project)
         self.file.add_command(label='Настройки', command=self.open_settings)
         self.menubar.add_cascade(label='Файл', menu=self.file)
         self.main_window.config(menu=self.menubar)
@@ -70,14 +70,55 @@ class MainWindow:
         
         self.add_webcam(self.webcam_label)
         
+        
+        """
+        РАСПОЗНАВАНИЕ
+        """
+        
+        self.reference_image = ImageTk.PhotoImage(Image.open('003.jpg').resize((800,400)))
+        self.inspected_image = ImageTk.PhotoImage(Image.open('003.jpg').resize((800,400)))
+        self.PCB_image = ImageTk.PhotoImage(Image.open('PCB.jpg').resize((800,400)))
+        
+        self.reference_image_label = Label(self.recognition, image=self.reference_image)
+        self.inspected_image_label = Label(self.recognition, image=self.inspected_image)
+        self.PCB_image_label = Label(self.recognition, image=self.PCB_image)
+        
+        self.b_recognize = Button(self.recognition, text='Распознать', command='')
+        self.b_next = Button(self.recognition, text='Следующий', command='')
+        self.b_previous = Button(self.recognition, text='Предыдущий', command='')
+        
+        columns = ('ID','Correct','Component')
+        
+        self.table = ttk.Treeview(self.recognition,columns=columns,show="headings")
+        
+        self.table.heading("ID", text="ID", anchor=W)
+        self.table.heading("Correct", text="Прваильно?", anchor=W)
+        self.table.heading("Component", text="Компонент", anchor=W)
+        
+        self.table.column("#1", stretch=NO)
+        self.table.column("#2", stretch=NO)
+        self.table.column("#3", stretch=NO)
+        
+        SMDs = [(1, True, 'Резистор'),(2, False, 'Конденсатор'),(3, True, 'Конденсатор'),
+                (4, False, 'Не установлен'),(5, True, 'Резистор'),(6, True, 'Резистор'),
+                (7, True, 'Резистор'),(8, True, 'Резистор'),(9, True, 'Резистор')]
+        
+        for SMD in SMDs:
+            self.table.insert("", END, values=SMD)     
+        
+        self.reference_image_label.grid(row=0,column=0, rowspan=3, columnspan=4)
+        self.inspected_image_label.grid(row=0,column=5, rowspan=3, columnspan=4)
+        self.PCB_image_label.grid(row=6,column=0, rowspan=3, columnspan=4)
+        
+        self.b_recognize.grid(row=6,column=4)
+        self.b_next.grid(row=7,column=4)
+        self.b_previous.grid(row=8,column=4)
+        
+        self.table.grid(row=6,column=5, rowspan=3, columnspan=4)
+                
         # добавляем фреймы в качестве вкладок
         self.notebook.add(self.alignment, text="Юстировка")
         self.notebook.add(self.recognition, text='Распознавание')
-        
-        """self.db_dir = './db'
-        if not os.path.exists(self.db_dir):
-            os.mkdir(self.db_dir)"""
-        
 
     def start_scaninng(self):
         ebb_command.grid_prepare(self.ser,self.y_now, self.x_now, 25, 25, self.cap)
@@ -196,6 +237,9 @@ class MainWindow:
 
     def create_project(self):
         createproject = CreateProject()
+        
+    def open_project(self):
+        openproject = OpenProject()
     
     def open_settings(self):
         settings = Settings()

@@ -1,0 +1,9 @@
+@startjson dd
+{
+    "contrast":"float",
+    "brightness":"float",
+    "temperature":"float",
+    "white_balance":"float",
+    "expouse":"float"
+}
+@endjson

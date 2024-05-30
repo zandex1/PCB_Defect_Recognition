@@ -1,0 +1,7 @@
+pip-tools
+pillow
+opencv-python
+pyserial
+numpy
+pandas
+matplotlib
